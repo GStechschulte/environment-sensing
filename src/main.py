@@ -21,26 +21,27 @@ def connect_to_db(config):
 def main():
 
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read('../config.ini')
     conn = connect_to_db(config)
     
     sensor = BME280()
 
+    print("DB and connection to sensor successful...")
+    print("Sensor is read every 60 seconds...")
     while True:
-        time.sleep(1)
         try:
             pressure, temperature, humidity = sensor.read_data()
-            # print(f"{datetime.utcnow()}, p: {pressure:.2f}, temp: {temperature:.2f}, hum: {humidity:.2f} %")
             with conn.cursor() as cur:
                 execute_values(cur, """
                     INSERT INTO bosche_sensor (time, metric, value)
                     VALUES %s
                 """, [(datetime.utcnow(), "temperature", temperature)])
                 conn.commit()
+                print(f"Data inserted successfully - Time: {datetime.utcnow()}, Temperature: {temperature:.2f} °C")
+            time.sleep(60)
         except KeyboardInterrupt:
             break
-
-
+        
 
 if __name__ == '__main__':
     main()

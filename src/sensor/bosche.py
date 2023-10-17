@@ -29,7 +29,7 @@ class BME280:
         self.osrs_h = 1		# Humidity oversampling x 1
         self.mode   = 3		# Normal self.mode
         self.t_sb   = 5		# Tstandby 1000ms
-        self.filter = 0		# self.filter off
+        self.filter = 0		# self.filter off (IRR filter)
         self.spi3w_en = 0   # 3-wire SPI Disable
         self.t_fine = 0.0
 
