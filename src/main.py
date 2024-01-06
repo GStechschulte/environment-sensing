@@ -1,10 +1,10 @@
-from argparse import ArgumentParser
 import configparser
-from datetime import datetime
 import time
 
-# import psycopg2
-# from psycopg2.extras import execute_values
+from argparse import ArgumentParser
+from datetime import datetime
+
+from psycopg2.extras import execute_values
 from sqlalchemy import create_engine
 
 from sensor import BME280
@@ -41,20 +41,19 @@ def main(args):
     while True:
         try:
             pressure, temperature, humidity = sensor.read_data()
-            # if args.write_to_db:
-            #     with conn.cursor() as cur:
-            #         execute_values(cur, """
-            #             INSERT INTO bosche_sensor (time, metric, value)
-            #             VALUES %s
-            #         """, [(datetime.now(), "temperature", temperature)])
-            #         conn.commit()
-            #         print(f"Data inserted successfully - Time: {datetime.now()}, Temperature: {temperature:.2f} °C")
-            # else:
-            #     print(f"Time: {datetime.now()}, Temperature: {temperature:.2f} °C")
+            if args.write_to_db:
+                with conn.cursor() as cur:
+                    execute_values(cur, """
+                        INSERT INTO bosche_sensor (time, metric, value)
+                        VALUES %s
+                    """, [(datetime.now(), "temperature", temperature)])
+                    conn.commit()
+                    print(f"Data inserted successfully - Time: {datetime.now()}, Temperature: {temperature:.2f} °C")
+            else:
+                print(f"Time: {datetime.now()}, Temperature: {temperature:.2f} °C")
             print(f"Time: {datetime.now()}, Temperature: {temperature:.2f} °C")
             time.sleep(1)
         except KeyboardInterrupt:1
-            break
         
 
 if __name__ == '__main__':
