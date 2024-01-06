@@ -11,11 +11,10 @@ BME280_REGISTER_HUMIDITY_DATA = 0xFD
 DIG_T, DIG_P, DIG_H = [], [], []
 
 class BME280:
-    """
-    BME280 sensor class for reading temperature, pressure and humidity data.
+    """BME280 sensor class for reading temperature, pressure and humidity data.
 
     The BME280 sensor communicates with the Raspberry Pi over the I2C protocol 
-    by using the smbus library. 
+    by using the 'smbus' library. 
     """
 
 
