@@ -15,14 +15,19 @@ RESPONSE = {
 }
 
 
-def on_publish(mid):
-    print(f"Connected to broker with status: {mid}: {RESPONSE.get(mid, 'Unknown')}")
+def on_connect(client, userdata, flags, rc):
+    print(f"Connected to broker with status: {rc}")
+
+
+def on_publish(client, data, mid):
+    print(f"Publish completed: {mid}")
 
 
 def main():
 
-    client = mqtt.Client(client_id="jetson", protocol=mqtt.MQTTv5)
+    client = mqtt.Client(protocol=mqtt.MQTTv311)
     # Set the callback function for when the publisher connects to the broker
+    client.on_connect = on_connect
     client.on_publish = on_publish
     # Connect to the broker
     client.connect(BROKER_ADDRESS, PORT)

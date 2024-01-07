@@ -12,15 +12,19 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("testing")
 
 
-def on_message(client, data, msg):
-    print(f"Received topic: {msg.topic}, message:{msg.payload.decode()}")
+def on_message(client, userData, msg):
+    print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 
 
 def main():
-    client = mqtt.Client(protocol=mqtt.MQTTv31)
+    
+    client = mqtt.Client(protocol=mqtt.MQTTv311)
     client.on_connect = on_connect
-    client.on_message = on_message
     client.connect(BROKER_ADDRESS, 1883)
+
+    client.subscribe(TOPIC)
+    client.on_message = on_message
+
     client.loop_forever()
 
 
