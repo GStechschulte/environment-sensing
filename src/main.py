@@ -53,7 +53,8 @@ def main(args):
                 print(f"Time: {datetime.now()}, Temperature: {temperature:.2f} °C")
             print(f"Time: {datetime.now()}, Temperature: {temperature:.2f} °C")
             time.sleep(1)
-        except KeyboardInterrupt:1
+        except KeyboardInterrupt:
+            break
         
 
 if __name__ == '__main__':
