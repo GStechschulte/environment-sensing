@@ -11,10 +11,11 @@ BME280_REGISTER_HUMIDITY_DATA = 0xFD
 DIG_T, DIG_P, DIG_H = [], [], []
 
 class BME280:
-    """BME280 sensor class for reading temperature, pressure and humidity data.
+    """Bosche BME280 sensor class for reading temperature, pressure and humidity 
+    data.
 
     The BME280 sensor communicates with the Raspberry Pi over the I2C protocol 
-    by using the 'smbus' library. 
+    using the 'smbus' library. 
     """
 
 
@@ -72,12 +73,12 @@ class BME280:
 
         ## Construct the calibration words ##
 
-        # temperature
+        # Temperature
         DIG_T.append((self.calib[1] << 8) | self.calib[0])
         DIG_T.append((self.calib[3] << 8) | self.calib[2])
         DIG_T.append((self.calib[5] << 8) | self.calib[4])
 
-        # pressure
+        # Pressure
         DIG_P.append((self.calib[7] << 8) | self.calib[6])
         DIG_P.append((self.calib[9] << 8) | self.calib[8])
         DIG_P.append((self.calib[11]<< 8) | self.calib[10])
@@ -88,7 +89,7 @@ class BME280:
         DIG_P.append((self.calib[21]<< 8) | self.calib[20])
         DIG_P.append((self.calib[23]<< 8) | self.calib[22])
 
-        # humidity
+        # Humidity
         DIG_H.append(self.calib[24])
         DIG_H.append((self.calib[26]<< 8) | self.calib[25])
         DIG_H.append(self.calib[27])
@@ -96,7 +97,7 @@ class BME280:
         DIG_H.append((self.calib[30]<< 4) | ((self.calib[29] >> 4) & 0x0F))
         DIG_H.append(self.calib[31])
         
-        # convert signed numbers to unsigned numbers 
+        # Convert signed numbers to unsigned numbers 
         for i in range(1, 2):
             if DIG_T[i] & 0x8000:
                 DIG_T[i] = (-DIG_T[i] ^ 0xFFFF) + 1
